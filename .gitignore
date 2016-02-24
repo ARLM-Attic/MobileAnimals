@@ -1,0 +1,59 @@
+# General
+
+packages
+Resource.designer.cs
+
+#Autosave files
+*~
+
+
+# Build/test output
+obj
+bin
+test-results
+
+*.pidb
+*.userprefs
+*.swp
+*.DS_Store
+*.nib
+*.suo
+*.user
+*.pfx
+
+
+ 
+_UpgradeReport_Files
+UpgradeLog.*
+ 
+*.DS_Store
+*.sln.cache
+*.suo
+*.userprefs
+*.usertasks
+*.user
+*.pidb
+*.swp
+*.DS_Store
+*.nib
+*.pfx
+
+
+# VS sometimes writes these for no apparent reason
+_UpgradeReport_Files
+UpgradeLog.*
+
+# Per-user data
+*.DS_Store
+*.sln.cache
+*.suo
+*.userprefs
+*.usertasks
+*.user
+
+# ReSharper
+*_Resharper.*
+*.Resharper
+
+# dotCover
+*.dotCover
