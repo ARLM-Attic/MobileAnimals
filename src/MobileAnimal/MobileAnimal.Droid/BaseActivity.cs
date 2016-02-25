@@ -9,15 +9,23 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using System.IO;
-using MobileAnimal.Core;
 
 namespace MobileAnimal.Droid
 {
+	/// <summary>
+	/// Base activity for reuse
+	/// </summary>
 	public class BaseActivity : Activity
 	{
+		#region [Attrs]
+
 		private const string _applicationURL = @"https://bomba.azurewebsites.net";
 		private static MobileServiceClient _mobileServiceClient;
 		private static MobileServiceUser _user;
+
+		#endregion
+
+		#region [Props]
 
 		public static MobileServiceClient Client {
 			get { 
@@ -30,12 +38,25 @@ namespace MobileAnimal.Droid
 			set { _user = value; }
 		}
 
+		#endregion
 
+		#region [Methods]
+
+		/// <summary>
+		/// Creates the and show dialog.
+		/// </summary>
+		/// <param name="exception">Exception.</param>
+		/// <param name="title">Title.</param>
 		public void CreateAndShowDialog(Exception exception, String title)
 		{
 			CreateAndShowDialog(exception.Message, title);
 		}
 
+		/// <summary>
+		/// Creates the and show dialog.
+		/// </summary>
+		/// <param name="message">Message.</param>
+		/// <param name="title">Title.</param>
 		public void CreateAndShowDialog(string message, string title)
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -43,6 +64,8 @@ namespace MobileAnimal.Droid
 			builder.SetTitle(title);
 			builder.Create().Show();
 		}
+
+		#endregion
 	}
 }
 

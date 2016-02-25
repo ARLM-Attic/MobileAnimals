@@ -9,7 +9,6 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using System.IO;
-using MobileAnimal.Core;
 using Android.Net;
 
 namespace MobileAnimal.Droid
@@ -19,10 +18,14 @@ namespace MobileAnimal.Droid
 		Icon = "@mipmap/icon")]
 	public class MainActivity : BaseActivity
 	{
+		#region [Attrs]
+
 		private const string _localDbFilename = "animallocalstore.db";
 		private IMobileServiceSyncTable<Animal> _table;
 		private AnimalAdapter _adapter;
 		private ListView _listview;
+
+		#endregion
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -36,18 +39,22 @@ namespace MobileAnimal.Droid
 
 			var saveButton = FindViewById<Button>(Resource.Id.saveButton);
 			var nameEditText = FindViewById<TextView>(Resource.Id.nameEditText);
+
 			_listview = FindViewById<ListView>(Resource.Id.animalsListView);
-
 			_table = Client.GetSyncTable<Animal>();
-
 			_adapter = new AnimalAdapter(this);
+
 			var listViewToDo = FindViewById<ListView>(Resource.Id.animalsListView);
 			listViewToDo.Adapter = _adapter;
 
 			saveButton.Click += async (sender, e) => {
-				var animal = new Animal() { Name = nameEditText.Text };
+			
+				var animal = new Animal() { 
+					Name = nameEditText.Text //, UserId = CurrentUser.UserId
+				};
 
 				try {
+					
 					await _table.InsertAsync(animal); // insert the new item into the local database
 					await SyncAsync(); // send changes to the mobile service
 
@@ -63,13 +70,14 @@ namespace MobileAnimal.Droid
 			OnRefreshItemsSelected();
 		}
 
+		#region [Android menu]
+
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
 			MenuInflater.Inflate(Resource.Menu.activity_main, menu);
 			return true;
 		}
 
-		//Select an option from the menu
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
 			if (item.ItemId == Resource.Id.menu_refresh) {
@@ -82,9 +90,17 @@ namespace MobileAnimal.Droid
 			return true;
 		}
 
+		#endregion
+
+		#region [Azure methods]
+
+		/// <summary>
+		/// Inits the local store.
+		/// </summary>
+		/// <returns>The local store async.</returns>
 		private async Task InitLocalStoreAsync()
 		{
-			// new code to initialize the SQLite store
+			
 			string path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), 
 				              _localDbFilename);
 
@@ -98,6 +114,10 @@ namespace MobileAnimal.Droid
 			await Client.SyncContext.InitializeAsync(store);
 		}
 
+		/// <summary>
+		/// Determines whether this device has internet.
+		/// </summary>
+		/// <returns><c>true</c> if this instance has internet; otherwise, <c>false</c>.</returns>
 		private bool HasInternet()
 		{
 			var connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -105,6 +125,11 @@ namespace MobileAnimal.Droid
 			return (wifiInfo != null) && wifiInfo.IsConnected;
 		}
 
+		/// <summary>
+		/// Syncs the local data/azure.
+		/// </summary>
+		/// <returns>The async.</returns>
+		/// <param name="pullData">If set to <c>true</c> pull data.</param>
 		private async Task SyncAsync(bool pullData = false)
 		{
 			try {
@@ -124,13 +149,19 @@ namespace MobileAnimal.Droid
 			}
 		}
 
+		/// <summary>
+		/// Raises the refresh items 
+		/// </summary>
 		private async void OnRefreshItemsSelected()
 		{
 			await SyncAsync(pullData: true); // get changes from the mobile service
 			await RefreshItemsFromTableAsync(); // refresh view using local database
 		}
 
-		//Refresh the list with the items in the local database
+		/// <summary>
+		/// Refresh the list with the items in the local database
+		/// </summary>
+		/// <returns>The items from table async.</returns>
 		private async Task RefreshItemsFromTableAsync()
 		{
 			try {
@@ -146,6 +177,8 @@ namespace MobileAnimal.Droid
 				CreateAndShowDialog(e, "Error");
 			}
 		}
+
+		#endregion
 			
 	}
 }

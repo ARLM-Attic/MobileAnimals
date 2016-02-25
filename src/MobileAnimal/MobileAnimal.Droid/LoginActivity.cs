@@ -9,7 +9,6 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using System.IO;
-using MobileAnimal.Core;
 using Android.Content;
 
 namespace MobileAnimal.Droid
@@ -44,6 +43,11 @@ namespace MobileAnimal.Droid
 			};
 		}
 
+		#region [Azure methods]
+
+		/// <summary>
+		/// Authenticate user.
+		/// </summary>
 		private async Task<bool> Authenticate()
 		{
 			var success = false;
@@ -61,6 +65,8 @@ namespace MobileAnimal.Droid
 			}
 			return success;
 		}
+
+		#endregion
 	}
 }
 

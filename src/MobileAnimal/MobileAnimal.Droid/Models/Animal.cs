@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace MobileAnimal.Core
+namespace MobileAnimal.Droid
 {
 	public class Animal
 	{
@@ -9,6 +9,12 @@ namespace MobileAnimal.Core
 
 		[JsonProperty(PropertyName = "name")]
 		public string Name {
+			get;
+			set;
+		}
+
+		[JsonProperty(PropertyName = "userid")]
+		public string UserId {
 			get;
 			set;
 		}
