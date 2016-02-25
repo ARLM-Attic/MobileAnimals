@@ -15,12 +15,11 @@ using Android.Net;
 namespace MobileAnimal.Droid
 {
 	[Activity(Label = "MobileAnimal", 
-		//MainLauncher = true, 
+		MainLauncher = true, 
 		Icon = "@mipmap/icon")]
 	public class MainActivity : BaseActivity
 	{
 		private const string _localDbFilename = "animallocalstore.db";
-		//		private const string _applicationURL = @"https://bomba.azurewebsites.net";
 		private IMobileServiceSyncTable<Animal> _table;
 		private AnimalAdapter _adapter;
 		private ListView _listview;
@@ -33,7 +32,6 @@ namespace MobileAnimal.Droid
 
 //			CurrentPlatform.Init();
 
-//			_client = new MobileServiceClient(_applicationURL);
 			await InitLocalStoreAsync();
 
 			var saveButton = FindViewById<Button>(Resource.Id.saveButton);
