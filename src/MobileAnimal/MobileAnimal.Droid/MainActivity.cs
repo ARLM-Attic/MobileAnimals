@@ -10,6 +10,7 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using System.IO;
 using Android.Net;
+using Gcm.Client;
 
 namespace MobileAnimal.Droid
 {
@@ -20,6 +21,7 @@ namespace MobileAnimal.Droid
 	{
 		#region [Attrs]
 
+
 		private const string _localDbFilename = "animallocalstore.db";
 		private IMobileServiceSyncTable<Animal> _table;
 		private AnimalAdapter _adapter;
@@ -27,13 +29,39 @@ namespace MobileAnimal.Droid
 
 		#endregion
 
+		#region [Push]
+
+		private static MainActivity _instance = new MainActivity();
+
+		public static MainActivity CurrentActivity {
+			get {
+				return _instance;
+			}
+		}
+
+		#endregion
+
+
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
+			
+
 			base.OnCreate(savedInstanceState);
+
+			#region [enable push]
+//			_instance = this;
+//
+//			// Make sure the GCM client is set up correctly.
+//			GcmClient.CheckDevice(this);
+//			GcmClient.CheckManifest(this);
+//
+//			// Register the app for push notifications.
+//			GcmClient.Register(this, AnimalBroadcastReceiver.senderIDs);
+			#endregion
 
 			SetContentView(Resource.Layout.Main);
 
-//			CurrentPlatform.Init();
+			CurrentPlatform.Init();
 
 			await InitLocalStoreAsync();
 
