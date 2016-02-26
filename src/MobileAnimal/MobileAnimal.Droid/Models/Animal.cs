@@ -13,11 +13,11 @@ namespace MobileAnimal.Droid
 			set;
 		}
 
-		//		[JsonProperty(PropertyName = "userid")]
-		//		public string UserId {
-		//			get;
-		//			set;
-		//		}
+		[JsonProperty(PropertyName = "userid")]
+		public string UserId {
+			get;
+			set;
+		}
 	}
 }
 

@@ -19,7 +19,7 @@ namespace MobileAnimal.Droid
 	{
 		#region [Attrs]
 
-		private const string _applicationURL = @"https://bomba.azurewebsites.net";
+		private const string _applicationURL = @"https://point_to_your_azure_mobile_app.azurewebsites.net";
 		private static MobileServiceClient _mobileServiceClient;
 		private static MobileServiceUser _user;
 

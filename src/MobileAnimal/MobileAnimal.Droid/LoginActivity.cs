@@ -14,7 +14,7 @@ using Android.Content;
 namespace MobileAnimal.Droid
 {
 	[Activity(Label = "MobileAnimal", 
-		//MainLauncher = true, 
+		MainLauncher = true, 
 		Icon = "@mipmap/icon")]
 	public class LoginActivity : BaseActivity
 	{

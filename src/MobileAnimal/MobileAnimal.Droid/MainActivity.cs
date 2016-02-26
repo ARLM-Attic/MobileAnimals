@@ -15,14 +15,13 @@ using Gcm.Client;
 namespace MobileAnimal.Droid
 {
 	[Activity(Label = "MobileAnimal", 
-		MainLauncher = true, 
+		//MainLauncher = true, 
 		Icon = "@mipmap/icon")]
 	public class MainActivity : BaseActivity
 	{
 		#region [Attrs]
 
-
-		private const string _localDbFilename = "animallocalstore.db";
+		private const string _localDbFilename = "localanimalstore.db";
 		private IMobileServiceSyncTable<Animal> _table;
 		private AnimalAdapter _adapter;
 		private ListView _listview;
@@ -41,27 +40,25 @@ namespace MobileAnimal.Droid
 
 		#endregion
 
-
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			
-
 			base.OnCreate(savedInstanceState);
 
 			#region [enable push]
-//			_instance = this;
-//
-//			// Make sure the GCM client is set up correctly.
-//			GcmClient.CheckDevice(this);
-//			GcmClient.CheckManifest(this);
-//
-//			// Register the app for push notifications.
-//			GcmClient.Register(this, AnimalBroadcastReceiver.senderIDs);
+			_instance = this;
+
+			// Make sure the GCM client is set up correctly.
+			GcmClient.CheckDevice(this);
+			GcmClient.CheckManifest(this);
+
+			// Register the app for push notifications.
+			GcmClient.Register(this, AnimalBroadcastReceiver.senderIDs);
 			#endregion
 
 			SetContentView(Resource.Layout.Main);
 
-			CurrentPlatform.Init();
+//			CurrentPlatform.Init();
 
 			await InitLocalStoreAsync();
 
@@ -78,7 +75,8 @@ namespace MobileAnimal.Droid
 			saveButton.Click += async (sender, e) => {
 			
 				var animal = new Animal() { 
-					Name = nameEditText.Text //, UserId = CurrentUser.UserId
+					Name = nameEditText.Text 
+						, UserId = CurrentUser.UserId
 				};
 
 				try {
@@ -207,7 +205,6 @@ namespace MobileAnimal.Droid
 		}
 
 		#endregion
-			
 	}
 }
 

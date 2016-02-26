@@ -50,7 +50,7 @@ namespace MobileAnimal.Droid
 			}
 		}
 
-		#region [implemented abstract members of GcmServiceBase]
+		#region [Implemented abstract members of GcmServiceBase]
 
 		protected override void OnMessage(Context context, Intent intent)
 		{
