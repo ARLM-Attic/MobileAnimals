@@ -12,61 +12,49 @@ using System.IO;
 
 namespace MobileAnimal.Droid
 {
-	/// <summary>
-	/// Base activity for reuse
-	/// </summary>
-	public class BaseActivity : Activity
-	{
-		#region [Attrs]
+    /// <summary>
+    /// Base activity for reuse
+    /// </summary>
+    public class BaseActivity : Activity
+    {
+        private const string _applicationURL = @"http://tdcdemo.azurewebsites.net";
+        private static MobileServiceClient _mobileServiceClient;
+        private static MobileServiceUser _user;
 
-		private const string _applicationURL = @"https://point_to_your_azure_mobile_app.azurewebsites.net";
-		private static MobileServiceClient _mobileServiceClient;
-		private static MobileServiceUser _user;
+        public static MobileServiceClient Client
+        {
+            get
+            { 
+                return _mobileServiceClient ?? (_mobileServiceClient = new MobileServiceClient(_applicationURL)); 
+            }
+        }
 
-		#endregion
+        public static MobileServiceUser CurrentUser
+        {
+            get { return _user; }
+            set { _user = value; }
+        }
 
-		#region [Props]
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
 
-		public static MobileServiceClient Client {
-			get { 
-				return _mobileServiceClient ?? (_mobileServiceClient = new MobileServiceClient(_applicationURL)); 
-			}
-		}
+            CurrentPlatform.Init();
+        }
 
-		public static MobileServiceUser CurrentUser {
-			get { return _user; }
-			set { _user = value; }
-		}
+        public void CreateAndShowDialog(Exception exception, String title)
+        {
+            CreateAndShowDialog(exception.Message, title);
+        }
 
-		#endregion
-
-		#region [Methods]
-
-		/// <summary>
-		/// Creates the and show dialog.
-		/// </summary>
-		/// <param name="exception">Exception.</param>
-		/// <param name="title">Title.</param>
-		public void CreateAndShowDialog(Exception exception, String title)
-		{
-			CreateAndShowDialog(exception.Message, title);
-		}
-
-		/// <summary>
-		/// Creates the and show dialog.
-		/// </summary>
-		/// <param name="message">Message.</param>
-		/// <param name="title">Title.</param>
-		public void CreateAndShowDialog(string message, string title)
-		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.SetMessage(message);
-			builder.SetTitle(title);
-			builder.Create().Show();
-		}
-
-		#endregion
-	}
+        public void CreateAndShowDialog(string message, string title)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.SetMessage(message);
+            builder.SetTitle(title);
+            builder.Create().Show();
+        }
+    }
 }
 
 

@@ -20,18 +20,18 @@ using Newtonsoft.Json.Linq;
 
 namespace MobileAnimal.Droid
 {
-	[BroadcastReceiver(Permission = Gcm.Client.Constants.PERMISSION_GCM_INTENTS)]
-	[IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_MESSAGE }, 
-		Categories = new string[] { "@PACKAGE_NAME@" })]
-	[IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_REGISTRATION_CALLBACK }, 
-		Categories = new string[] { "@PACKAGE_NAME@" })]
-	[IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_LIBRARY_RETRY }, 
-		Categories = new string[] { "@PACKAGE_NAME@" })]
-	public class AnimalBroadcastReceiver : GcmBroadcastReceiverBase<PushHandlerService>
-	{
-		// Set the Google app ID.
-		public static string[] senderIDs = new string[] { "<GOOGLE_APP_NUMBER>" };
-	}
+    [BroadcastReceiver(Permission = Gcm.Client.Constants.PERMISSION_GCM_INTENTS)]
+    [IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_MESSAGE }, 
+        Categories = new string[] { "@PACKAGE_NAME@" })]
+    [IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_REGISTRATION_CALLBACK }, 
+        Categories = new string[] { "@PACKAGE_NAME@" })]
+    [IntentFilter(new string[] { Gcm.Client.Constants.INTENT_FROM_GCM_LIBRARY_RETRY }, 
+        Categories = new string[] { "@PACKAGE_NAME@" })]
+    public class AnimalBroadcastReceiver : GcmBroadcastReceiverBase<PushHandlerService>
+    {
+        // Set the Google app ID.
+        public static string[] senderIDs = new string[] { "homeless-1309" };
+    }
 
 }
 
