@@ -12,9 +12,6 @@ using System.IO;
 
 namespace MobileAnimal.Droid
 {
-    /// <summary>
-    /// Base activity for reuse
-    /// </summary>
     public class BaseActivity : Activity
     {
         private const string _applicationURL = @"http://tdcdemo.azurewebsites.net";

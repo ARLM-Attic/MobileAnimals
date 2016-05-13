@@ -30,7 +30,7 @@ namespace MobileAnimal.Droid
     public class AnimalBroadcastReceiver : GcmBroadcastReceiverBase<PushHandlerService>
     {
         // Set the Google app ID.
-        public static string[] senderIDs = new string[] { "homeless-1309" };
+        public static string[] senderIDs = new string[] { "358733187878" };
     }
 
 }

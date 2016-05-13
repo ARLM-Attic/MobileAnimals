@@ -20,6 +20,7 @@ namespace MobileAnimal.Droid
     public class MainActivity : BaseActivity
     {
         private const string _localDbFilename = "localanimalstore.db";
+
         private IMobileServiceSyncTable<Animal> _table;
         private AnimalAdapter _adapter;
         private ListView _listview;
@@ -34,6 +35,15 @@ namespace MobileAnimal.Droid
             }
         }
 
+        private void EnablePush()
+        {
+            _instance = this;
+            
+            GcmClient.CheckDevice(this);
+            GcmClient.CheckManifest(this);
+            GcmClient.Register(this, AnimalBroadcastReceiver.senderIDs);
+        }
+
         protected override async void OnCreate(Bundle savedInstanceState)
         {
 			
@@ -41,17 +51,7 @@ namespace MobileAnimal.Droid
 
             SetContentView(Resource.Layout.Main);
 
-            #region [enable push]
-		
-            _instance = this;
-
-//             Make sure the GCM client is set up correctly.
-            GcmClient.CheckDevice(this);
-            GcmClient.CheckManifest(this);
-//
-            // Register the app for push notifications.
-            GcmClient.Register(this, AnimalBroadcastReceiver.senderIDs);
-            #endregion
+            EnablePush();
 
             await InitLocalStoreAsync();
 
@@ -61,24 +61,19 @@ namespace MobileAnimal.Droid
             _listview = FindViewById<ListView>(Resource.Id.animalsListView);
             _table = Client.GetSyncTable<Animal>();
             _adapter = new AnimalAdapter(this);
-
-            var listViewToDo = FindViewById<ListView>(Resource.Id.animalsListView);
-            listViewToDo.Adapter = _adapter;
+            _listview.Adapter = _adapter;
 
             saveButton.Click += async (sender, e) =>
             {
-			
                 var animal = new Animal()
                 { 
                     Name = nameEditText.Text 
-//						, UserId = CurrentUser.UserId
                 };
 
                 try
                 {
-					
-                    await _table.InsertAsync(animal); // insert the new item into the local database
-                    await SyncAsync(); // send changes to the mobile service
+                    await _table.InsertAsync(animal); 
+                    await SyncAsync(); 
 
                     _adapter.Add(animal);
 
@@ -119,10 +114,6 @@ namespace MobileAnimal.Droid
 
         #region [Azure methods]
 
-        /// <summary>
-        /// Inits the local store.
-        /// </summary>
-        /// <returns>The local store async.</returns>
         private async Task InitLocalStoreAsync()
         {
 			
@@ -140,10 +131,6 @@ namespace MobileAnimal.Droid
             await Client.SyncContext.InitializeAsync(store);
         }
 
-        /// <summary>
-        /// Determines whether this device has internet.
-        /// </summary>
-        /// <returns><c>true</c> if this instance has internet; otherwise, <c>false</c>.</returns>
         private bool HasInternet()
         {
             var connectivityManager = (ConnectivityManager)GetSystemService(ConnectivityService);
@@ -151,16 +138,10 @@ namespace MobileAnimal.Droid
             return (wifiInfo != null) && wifiInfo.IsConnected;
         }
 
-        /// <summary>
-        /// Syncs the local data/azure.
-        /// </summary>
-        /// <returns>The async.</returns>
-        /// <param name="pullData">If set to <c>true</c> pull data.</param>
         private async Task SyncAsync(bool pullData = false)
         {
             try
             {
-
                 if (HasInternet())
                 {
                     await Client.SyncContext.PushAsync();
@@ -182,24 +163,16 @@ namespace MobileAnimal.Droid
             }
         }
 
-        /// <summary>
-        /// Raises the refresh items 
-        /// </summary>
         private async void OnRefreshItemsSelected()
         {
-            await SyncAsync(pullData: true); // get changes from the mobile service
-            await RefreshItemsFromTableAsync(); // refresh view using local database
+            await SyncAsync(pullData: true); 
+            await RefreshItemsFromTableAsync(); 
         }
 
-        /// <summary>
-        /// Refresh the list with the items in the local database
-        /// </summary>
-        /// <returns>The items from table async.</returns>
         private async Task RefreshItemsFromTableAsync()
         {
             try
             {
-                // Get the items that weren't marked as completed and add them in the adapter
                 var list = await _table.ToListAsync();
 
                 _adapter.Clear();

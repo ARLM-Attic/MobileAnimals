@@ -31,12 +31,10 @@ namespace MobileAnimal.Droid
 				
                 if (await Authenticate())
                 {
-
                     var intent = new Intent(this, typeof(MainActivity));
                     intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.NewTask); 
                     StartActivity(intent);
                     Finish();
-				
                 }
                 else
                 {
